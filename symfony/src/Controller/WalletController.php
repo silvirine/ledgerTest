@@ -40,10 +40,11 @@ class WalletController extends AbstractController
         requestBody: new OA\RequestBody(
             required: true,
             content: new OA\JsonContent(
-                required: ['name', 'balance'],
+                required: ['name', 'balance', 'currency'],
                 properties: [
                     new OA\Property(property: 'name', type: 'string', example: 'My Wallet'),
-                    new OA\Property(property: 'balance', type: 'number', format: 'float', example: 100.00)
+                    new OA\Property(property: 'balance', type: 'number', format: 'float', example: 100.00),
+                    new OA\Property(property: 'currency', type: 'string', example: 'EUR')
                 ]
             )
         ),
@@ -71,10 +72,14 @@ class WalletController extends AbstractController
         if (!isset($data['balance'])) {
             return $this->json(['errors' => ['Wallet balance must be provided.']], 400);
         }
+        if (!isset($data['currency'])) {
+            return $this->json(['errors' => ['Wallet currency must be provided.']], 400);
+        }
 
         $wallet = new Wallet();
         $wallet->setName($data['name']);
         $wallet->setBalance((string)$data['balance']);
+        $wallet->setCurrency((string)$data['currency']);
 
         $errors = $validator->validate($wallet);
         if (count($errors) > 0) {
@@ -87,12 +92,7 @@ class WalletController extends AbstractController
 
         $em->persist($wallet);
         $em->flush();
-        $walletData = [
-            'id' => $wallet->getId(),
-            'name' => $wallet->getName(),
-            'balance' => $wallet->getBalance(),
-        ];
-        return $this->json($walletData, 201);
+        return $this->json($wallet, 201);
     }
 
     #[Route('/{id}', name: 'wallet_show', methods: ['GET'])]
@@ -118,12 +118,7 @@ class WalletController extends AbstractController
     )]
     public function show(Wallet $wallet): JsonResponse
     {
-        $walletData = [
-            'id' => $wallet->getId(),
-            'name' => $wallet->getName(),
-            'balance' => $wallet->getBalance(),
-        ];
-        return $this->json($walletData, 200);
+        return $this->json($wallet, 200);
     }
 
     #[Route('/{id}', name: 'wallet_update', methods: ['PUT'])]
@@ -143,7 +138,8 @@ class WalletController extends AbstractController
             content: new OA\JsonContent(
                 properties: [
                     new OA\Property(property: 'name', type: 'string', example: 'Updated Wallet Name'),
-                    new OA\Property(property: 'balance', type: 'number', format: 'float', example: 150.50)
+                    new OA\Property(property: 'balance', type: 'number', format: 'float', example: 150.50),
+                    new OA\Property(property: 'currency', type: 'string', example: 'USD')
                 ]
             )
         ),
@@ -167,6 +163,9 @@ class WalletController extends AbstractController
         if (isset($data['balance'])) {
             $wallet->setBalance($data['balance']);
         }
+        if (isset($data['currency'])) {
+            $wallet->setCurrency($data['currency']);
+        }
 
         $errors = $validator->validate($wallet);
         if (count($errors) > 0) {
@@ -178,12 +177,7 @@ class WalletController extends AbstractController
         }
 
         $em->flush();
-        $walletData = [
-            'id' => $wallet->getId(),
-            'name' => $wallet->getName(),
-            'balance' => $wallet->getBalance(),
-        ];
-        return $this->json($walletData, 200);
+        return $this->json($wallet, 200);
     }
 
     #[Route('/{id}', name: 'wallet_delete', methods: ['DELETE'])]

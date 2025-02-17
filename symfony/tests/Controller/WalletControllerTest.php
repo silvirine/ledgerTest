@@ -31,8 +31,7 @@ class WalletControllerTest extends WebTestCase
             [],
             ['CONTENT_TYPE' => 'application/json'],
             json_encode([
-                'name' => 'Test Wallet',
-                'babne' => 100.00
+                'name' => 'Test Wallet'
             ])
         );
 
@@ -57,7 +56,8 @@ class WalletControllerTest extends WebTestCase
             ['CONTENT_TYPE' => 'application/json'],
             json_encode([
                 'name' => 'Test Wallet',
-                'balance' => 100.50
+                'balance' => 100.50,
+                'currency' => 'EUR'
             ])
         );
 
@@ -71,6 +71,8 @@ class WalletControllerTest extends WebTestCase
         $this->assertArrayHasKey('id', $data, 'Response should include an id');
         $this->assertArrayHasKey('name', $data, 'Response should include a name');
         $this->assertArrayHasKey('balance', $data, 'Response should include a balance');
+        $this->assertArrayHasKey('currency', $data, 'Response should include a currency');
         $this->assertEquals('Test Wallet', $data['name']);
+        $this->assertEquals('EUR', $data['currency']);
     }
 }

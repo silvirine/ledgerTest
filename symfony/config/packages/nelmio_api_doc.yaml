@@ -12,6 +12,7 @@ nelmio_api_doc:
             - id
             - name
             - balance
+            - currency
           properties:
             id:
               type: integer
@@ -26,6 +27,10 @@ nelmio_api_doc:
               format: float
               example: 100.0
               description: "The current balance of the wallet"
+            currency:
+              type: string
+              example: "EUR"
+              description: "The currency of the wallet"
         Ledger:
           type: object
           required:

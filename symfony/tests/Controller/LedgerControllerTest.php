@@ -79,7 +79,8 @@ class LedgerControllerTest extends WebTestCase
             ['CONTENT_TYPE' => 'application/json'],
             json_encode([
                 'name'    => 'Test Wallet',
-                'balance' => 100.50
+                'balance' => 100.50,
+                'currency' => 'EUR'
             ])
         );
         $this->assertResponseStatusCodeSame(201);

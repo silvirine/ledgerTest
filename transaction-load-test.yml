@@ -1,0 +1,16 @@
+config:
+  target: "http://localhost:8080"
+  phases:
+    - duration: 60       # test for 60 seconds
+      arrivalRate: 17    # approximately 17 new requests per second (1020 per minute)
+  defaults:
+    headers:
+      Content-Type: "application/json"
+scenarios:
+  - flow:
+      - post:
+          url: "/api/transactions"
+          json:
+            reference: "TXTEST{{ $randomInt(10000, 99999) }}"
+            description: "Load test transaction"
+            transactionDate: "{{ now | date('Y-m-d\\TH:i:s\\Z') }}"

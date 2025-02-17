@@ -35,6 +35,12 @@ use OpenApi\Attributes as OA;
             format: 'float',
             example: 100.0,
             description: 'The current balance of the wallet'
+        ),
+        new OA\Property(
+            property: 'currency',
+            type: 'string',
+            example: 'USD',
+            description: 'The currency of the wallet balance'
         )
     ]
 )]
@@ -56,6 +62,12 @@ class Wallet
     #[Assert\GreaterThanOrEqual(value: 0, message: 'Wallet balance cannot be negative.')]
     #[Groups(['wallet:read'])]
     private ?string $balance = null;
+
+    #[ORM\Column(type: 'string', length: 3)]
+    #[Assert\NotBlank(message: 'Currency is required.')]
+    #[Assert\Length(min: 3, max: 3, exactMessage: 'Currency must be exactly 3 characters (e.g., USD, EUR).')]
+    #[Groups(['wallet:read'])]
+    private ?string $currency = null;
 
     public function getId(): ?int
     {
@@ -82,5 +94,16 @@ class Wallet
     {
         $this->balance = $balance;
         return $this;
+    }
+
+    public function setCurrency(string $currency): self
+    {
+        $this->currency = strtoupper($currency);
+        return $this;
+    }
+
+    public function getCurrency(): ?string
+    {
+        return $this->currency;
     }
 }
