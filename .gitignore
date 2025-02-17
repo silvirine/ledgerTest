@@ -63,6 +63,10 @@
 /symfony/.env.dev
 /symfony/.env
 
+# Main env files
+.env.dev
+.env
+
 # Logs and cache
 /symfony/var/log/*
 /symfony/var/cache/*
