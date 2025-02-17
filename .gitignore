@@ -61,6 +61,7 @@
 
 # Symfony specific environment/local configuration
 /symfony/.env.dev
+/symfony/.env.test
 /symfony/.env
 
 # Main env files
