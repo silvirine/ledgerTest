@@ -119,19 +119,6 @@ class LedgerController extends AbstractController
                 ? $ledger->getTransactionDate()->format(\DateTime::ATOM)
                 : null,
             'transactionType' => $ledger->getTransactionType(),
-            'wallet' => $ledger->getWallet() ? [
-                'id'      => $ledger->getWallet()->getId(),
-                'name'    => $ledger->getWallet()->getName(),
-                'balance' => $ledger->getWallet()->getBalance(),
-            ] : null,
-            'transaction' => $ledger->getTransaction() ? [
-                'id'              => $ledger->getTransaction()->getId(),
-                'reference'       => $ledger->getTransaction()->getReference(),
-                'description'     => $ledger->getTransaction()->getDescription(),
-                'transactionDate' => $ledger->getTransaction()->getTransactionDate()
-                    ? $ledger->getTransaction()->getTransactionDate()->format(\DateTime::ATOM)
-                    : null,
-            ] : null,
         ];
 
         return $this->json($ledgerData, 200);

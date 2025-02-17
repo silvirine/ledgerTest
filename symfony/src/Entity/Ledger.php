@@ -4,8 +4,7 @@ namespace App\Entity;
 
 use App\Repository\LedgerRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
-use OpenApi\Attributes as OA;
+use Symfony\Component\Validator\Constraints as Assert;use OpenApi\Attributes as OA;
 
 #[ORM\Entity(repositoryClass: LedgerRepository::class)]
 #[ORM\Table(name: 'ledger')]
