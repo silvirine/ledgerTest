@@ -45,7 +45,7 @@ use OpenApi\Attributes as OA;
         new OA\Property(
             property: 'ledgerEntries',
             type: 'array',
-            items: new OA\Items(ref: 'Ledger'),
+            items: new OA\Items(ref: '#/components/schemas/Ledger'),
             description: 'List of ledger entries associated with the transaction'
         )
     ]
@@ -76,8 +76,6 @@ class Transaction
     {
         $this->ledgerEntries = new ArrayCollection();
     }
-
-    // Getters and setters
 
     public function getId(): ?int
     {
@@ -137,7 +135,6 @@ class Transaction
     public function removeLedgerEntry(\App\Entity\Ledger $ledgerEntry): self
     {
         if ($this->ledgerEntries->removeElement($ledgerEntry)) {
-            // set the owning side to null (unless already changed)
             if ($ledgerEntry->getTransaction() === $this) {
                 $ledgerEntry->setTransaction(null);
             }

@@ -121,7 +121,7 @@ class LedgerController extends AbstractController
             'transactionType' => $ledger->getTransactionType(),
         ];
 
-        return $this->json($ledgerData, 200);
+        return $this->json($ledgerData, 201);
     }
 
     #[Route('/{id}', name: 'ledger_show', methods: ['GET'])]

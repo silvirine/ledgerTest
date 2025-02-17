@@ -4,7 +4,8 @@ namespace App\Entity;
 
 use App\Repository\LedgerRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;use OpenApi\Attributes as OA;
+use Symfony\Component\Validator\Constraints as Assert;
+use OpenApi\Attributes as OA;
 
 #[ORM\Entity(repositoryClass: LedgerRepository::class)]
 #[ORM\Table(name: 'ledger')]
@@ -49,12 +50,12 @@ use Symfony\Component\Validator\Constraints as Assert;use OpenApi\Attributes as 
         ),
         new OA\Property(
             property: 'wallet',
-            ref: 'Wallet',
+            ref: '#/components/schemas/Wallet',
             description: 'The wallet associated with this ledger entry'
         ),
         new OA\Property(
             property: 'transaction',
-            ref: 'Transaction',
+            ref: '#/components/schemas/Transaction',
             description: 'The transaction grouping this ledger entry'
         )
     ]
@@ -92,8 +93,6 @@ class Ledger
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\NotNull(message: 'Transaction must be associated with the ledger entry.')]
     private ?\App\Entity\Transaction $transaction = null;
-
-    // Getters and setters
 
     public function getId(): ?int
     {
