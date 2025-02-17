@@ -3,13 +3,39 @@
 namespace App\Entity;
 
 use App\Repository\WalletRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use OpenApi\Attributes as OA;
 
 #[ORM\Entity(repositoryClass: WalletRepository::class)]
 #[ORM\Table(name: 'wallet', indexes: [new ORM\Index(name: 'idx_wallet_name', columns: ['name'])])]
+#[OA\Schema(
+    name: 'Wallet',
+    title: 'Wallet',
+    description: 'A wallet holding a balance.',
+    required: ['id', 'name', 'balance'],
+    properties: [
+        new OA\Property(
+            property: 'id',
+            type: 'integer',
+            readOnly: true,
+            description: 'Unique identifier of the wallet'
+        ),
+        new OA\Property(
+            property: 'name',
+            type: 'string',
+            example: 'My Wallet',
+            description: 'The name of the wallet'
+        ),
+        new OA\Property(
+            property: 'balance',
+            type: 'number',
+            format: 'float',
+            example: 100.00,
+            description: 'The current balance of the wallet'
+        )
+    ]
+)]
 class Wallet
 {
     #[ORM\Id]
@@ -25,15 +51,6 @@ class Wallet
     #[Assert\NotNull(message: 'Wallet balance must be provided.')]
     #[Assert\GreaterThanOrEqual(value: 0, message: 'Wallet balance cannot be negative.')]
     private ?string $balance = null;
-
-    #[ORM\OneToMany(mappedBy: 'wallet', targetEntity: \App\Entity\Ledger::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
-    private Collection $ledgers;
-
-
-    public function __construct()
-    {
-        $this->ledgers = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -59,36 +76,6 @@ class Wallet
     public function setBalance(string $balance): self
     {
         $this->balance = $balance;
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Ledger>
-     */
-    public function getLedgers(): Collection
-    {
-        return $this->ledgers;
-    }
-
-    public function addLedger(Ledger $ledger): static
-    {
-        if (!$this->ledgers->contains($ledger)) {
-            $this->ledgers->add($ledger);
-            $ledger->setWallet($this);
-        }
-
-        return $this;
-    }
-
-    public function removeLedger(Ledger $ledger): static
-    {
-        if ($this->ledgers->removeElement($ledger)) {
-            // set the owning side to null (unless already changed)
-            if ($ledger->getWallet() === $this) {
-                $ledger->setWallet(null);
-            }
-        }
-
         return $this;
     }
 }

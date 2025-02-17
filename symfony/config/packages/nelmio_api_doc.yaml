@@ -1,0 +1,101 @@
+nelmio_api_doc:
+  documentation:
+    info:
+      title: "My App"
+      description: "API endpoints for Wallet, Ledger, and Transaction management"
+      version: "1.0.0"
+    components:
+      schemas:
+        Wallet:
+          type: object
+          required:
+            - id
+            - name
+            - balance
+          properties:
+            id:
+              type: integer
+              readOnly: true
+              description: "Unique identifier of the wallet"
+            name:
+              type: string
+              example: "My Wallet"
+              description: "The name of the wallet"
+            balance:
+              type: number
+              format: float
+              example: 100.0
+              description: "The current balance of the wallet"
+        Ledger:
+          type: object
+          required:
+            - id
+            - amount
+            - description
+            - transactionDate
+            - transactionType
+            - wallet
+            - transaction
+          properties:
+            id:
+              type: integer
+              readOnly: true
+              description: "Unique identifier of the ledger entry"
+            amount:
+              type: number
+              format: float
+              example: 50.00
+              description: "The monetary amount for this ledger entry"
+            description:
+              type: string
+              example: "Payment received"
+              description: "A brief description of the ledger entry"
+            transactionDate:
+              type: string
+              format: date-time
+              example: "2023-03-01T12:00:00Z"
+              description: "The date and time when the transaction occurred"
+            transactionType:
+              type: string
+              enum: ["credit", "debit"]
+              example: "credit"
+              description: "The type of transaction (credit or debit)"
+            wallet:
+              $ref: "#/components/schemas/Wallet"
+              description: "The wallet associated with this ledger entry"
+            transaction:
+              $ref: "#/components/schemas/Transaction"
+              description: "The transaction grouping this ledger entry"
+        Transaction:
+          type: object
+          required:
+            - id
+            - reference
+            - description
+            - transactionDate
+          properties:
+            id:
+              type: integer
+              readOnly: true
+              description: "Unique identifier of the transaction"
+            reference:
+              type: string
+              example: "TX123456"
+              description: "A unique reference for the transaction"
+            description:
+              type: string
+              example: "Transaction description"
+              description: "A brief description of the transaction"
+            transactionDate:
+              type: string
+              format: date-time
+              example: "2023-03-01T12:00:00Z"
+              description: "The date and time when the transaction occurred"
+            ledgerEntries:
+              type: array
+              items:
+                $ref: "#/components/schemas/Ledger"
+              description: "List of ledger entries associated with the transaction"
+  areas:
+    path_patterns:
+      - ^/api(?!/doc$)
