@@ -50,3 +50,36 @@
 
 # Embedded web-server pid file
 /.web-server-pid
+
+# Ignore Composer files in the Symfony subdirectory
+/symfony/vendor/
+/symfony/var/
+/symfony/node_modules/
+
+# Build assets
+/symfony/public/build/
+
+# Symfony specific environment/local configuration
+/symfony/.env.dev
+/symfony/.env
+
+# Logs and cache
+/symfony/var/log/*
+/symfony/var/cache/*
+
+# Ignore PHPStorm/IDE files
+.idea/
+.vscode/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Docker files
+docker-compose.override.yml
+*.log
+
+# We manage dependencies via Composer on each environment
+/symfony/composer.lock
+
+
